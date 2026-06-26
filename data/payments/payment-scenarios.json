@@ -1,0 +1,55 @@
+{
+  "description": "Account and payment scenarios — linked by userId",
+  "accounts": [
+    {
+      "userId": "user-standard-us",
+      "xrayKey": "BANK-301",
+      "accountType": "checking",
+      "currency": "USD",
+      "initialDeposit": "500.00"
+    },
+    {
+      "userId": "user-premium-uk",
+      "xrayKey": "BANK-302",
+      "accountType": "premium",
+      "currency": "GBP",
+      "initialDeposit": "1000.00"
+    },
+    {
+      "userId": "user-savings-ca",
+      "xrayKey": "BANK-303",
+      "accountType": "savings",
+      "currency": "USD",
+      "initialDeposit": "250.00"
+    }
+  ],
+  "payments": [
+    {
+      "userId": "user-standard-us",
+      "xrayKey": "BANK-401",
+      "beneficiary": "John Smith",
+      "beneficiaryAccount": "ACC-987654",
+      "amount": "25.00",
+      "reference": "Rent payment",
+      "expectedResult": "success"
+    },
+    {
+      "userId": "user-premium-uk",
+      "xrayKey": "BANK-402",
+      "beneficiary": "Alice Brown",
+      "beneficiaryAccount": "ACC-112233",
+      "amount": "50.00",
+      "reference": "Invoice #8842",
+      "expectedResult": "success"
+    },
+    {
+      "userId": "user-savings-ca",
+      "xrayKey": "BANK-403",
+      "beneficiary": "Utility Co",
+      "beneficiaryAccount": "ACC-445566",
+      "amount": "75.00",
+      "reference": "Monthly bill",
+      "expectedResult": "success"
+    }
+  ]
+}

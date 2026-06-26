@@ -1,0 +1,18 @@
+# Environment configuration — override via MAESTRO_ENV or CI variables
+environments:
+  local:
+    baseUrl: "http://localhost:3000"
+    apiUrl: "http://localhost:4000"
+    timeout: 10000
+
+  staging:
+    baseUrl: "${STAGING_BASE_URL:-https://staging-bank.example.com}"
+    apiUrl: "${STAGING_API_URL:-https://staging-api-bank.example.com}"
+    timeout: 15000
+
+  production:
+    baseUrl: "${PROD_BASE_URL:-https://bank.example.com}"
+    apiUrl: "${PROD_API_URL:-https://api-bank.example.com}"
+    timeout: 20000
+
+defaultEnvironment: local

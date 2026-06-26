@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OnboardingUser",
+  "type": "object",
+  "required": ["id", "firstName", "lastName", "email", "phone", "password"],
+  "properties": {
+    "id": { "type": "string" },
+    "xrayKey": { "type": "string", "pattern": "^[A-Z]+-[0-9]+$" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "email": { "type": "string", "format": "email" },
+    "phone": { "type": "string" },
+    "password": { "type": "string", "minLength": 8 },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*Assertion.*|.*assertVisible.*|.*Insufficient funds.*"
+  },
+  {
+    "name": "Test defects",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*Element not found.*|.*Timeout.*"
+  },
+  {
+    "name": "Ignored",
+    "matchedStatuses": ["skipped"]
+  }
+]

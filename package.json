@@ -1,0 +1,23 @@
+{
+  "name": "demo-app-automation-framework",
+  "version": "1.0.0",
+  "description": "Banking test automation for Demo App — Karate API, Maestro UI/mobile, CI/CD, and reporting",
+  "private": true,
+  "scripts": {
+    "mock:serve": "npx --yes serve mock-app -l 3000",
+    "mock:api": "node mock-api/server.js",
+    "test:api": "./scripts/run-api-tests.sh",
+    "test:ui": "./scripts/run-e2e.sh",
+    "test:e2e": "./scripts/run-e2e.sh",
+    "test:smoke": "./scripts/run-smoke.sh",
+    "test:regression": "./scripts/run-regression.sh",
+    "test:data-driven": "./scripts/data-driven-runner.sh",
+    "test:full": "./scripts/run-full-suite.sh",
+    "report:allure": "./scripts/generate-allure-report.sh",
+    "report:portal": "./scripts/upload-reportportal.sh",
+    "xray:upload": "./scripts/xray-upload.sh"
+  },
+  "devDependencies": {
+    "allure-commandline": "^2.32.0"
+  }
+}

@@ -1,0 +1,4 @@
+# Shared subflow: common success assertions (web)
+url: ${BASE_URL}
+---
+- assertVisible: ${SUCCESS_TEXT}

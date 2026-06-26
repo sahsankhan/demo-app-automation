@@ -1,0 +1,23 @@
+# @BANK-101 User registration and email capture
+url: ${BASE_URL}
+---
+- openLink: ${BASE_URL}/onboarding.html
+- assertVisible: "Create your account"
+
+- tapOn: "First name"
+- inputText: ${FIRST_NAME}
+
+- tapOn: "Last name"
+- inputText: ${LAST_NAME}
+
+- tapOn: "Email"
+- inputText: ${EMAIL}
+
+- tapOn: "Phone"
+- inputText: ${PHONE}
+
+- tapOn: "Password"
+- inputText: ${PASSWORD}
+
+- tapOn: "Register"
+- assertVisible: "Registration successful"

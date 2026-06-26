@@ -1,0 +1,38 @@
+{
+  "description": "KYC verification scenarios mapped to user profiles",
+  "scenarios": [
+    {
+      "userId": "user-standard-us",
+      "xrayKey": "BANK-201",
+      "dateOfBirth": "1990-05-15",
+      "nationalId": "5678",
+      "address": "742 Evergreen Terrace",
+      "city": "Springfield",
+      "country": "US",
+      "documentType": "passport",
+      "expectedResult": "verified"
+    },
+    {
+      "userId": "user-premium-uk",
+      "xrayKey": "BANK-202",
+      "dateOfBirth": "1985-11-22",
+      "nationalId": "9012",
+      "address": "10 Downing Street",
+      "city": "London",
+      "country": "UK",
+      "documentType": "national_id",
+      "expectedResult": "verified"
+    },
+    {
+      "userId": "user-savings-ca",
+      "xrayKey": "BANK-203",
+      "dateOfBirth": "1995-03-08",
+      "nationalId": "3456",
+      "address": "100 Queen Street",
+      "city": "Toronto",
+      "country": "CA",
+      "documentType": "drivers_license",
+      "expectedResult": "verified"
+    }
+  ]
+}

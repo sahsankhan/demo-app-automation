@@ -1,0 +1,205 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  BASE_URL: http://localhost:3000
+  API_PORT: 4000
+  NODE_VERSION: "20"
+  JAVA_VERSION: "17"
+  MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: "true"
+
+jobs:
+  api-tests:
+    name: API tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run Karate API tests
+        run: |
+          chmod +x scripts/*.sh
+          ./scripts/run-api-tests.sh
+
+      - name: Upload API results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-junit
+          path: reports/karate/*.xml
+          if-no-files-found: warn
+
+  ui-tests:
+    name: UI tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Maestro CLI
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Start Demo App (web)
+        run: |
+          npx --yes serve mock-app -l 3000 &
+          npx --yes wait-on http://localhost:3000
+
+      - name: Run Maestro UI tests
+        run: |
+          chmod +x scripts/*.sh
+          USER_ID=user-standard-us ./scripts/run-e2e.sh
+
+      - name: Upload UI results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-junit
+          path: reports/junit/*.xml
+          if-no-files-found: warn
+
+  regression:
+    name: Regression (${{ matrix.tag }})
+    runs-on: ubuntu-latest
+    needs: [api-tests, ui-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        tag: [smoke, regression]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Maestro CLI
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Start Demo App (web)
+        run: |
+          npx --yes serve mock-app -l 3000 &
+          npx --yes wait-on http://localhost:3000
+
+      - name: Run data-driven UI tests
+        run: |
+          chmod +x scripts/*.sh
+          TAG_FILTER="${{ matrix.tag }}" ./scripts/data-driven-runner.sh
+
+  allure-report:
+    name: Allure report
+    runs-on: ubuntu-latest
+    needs: [api-tests, ui-tests]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "*-junit"
+          merge-multiple: true
+          path: reports/combined
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build Allure report
+        run: |
+          mkdir -p reports/junit reports/karate
+          cp reports/combined/*.xml reports/junit/ 2>/dev/null || true
+          cp reports/combined/*.xml reports/karate/ 2>/dev/null || true
+          chmod +x scripts/*.sh
+          ./scripts/generate-allure-report.sh || echo "No results to report yet"
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          if-no-files-found: ignore
+
+  xray:
+    name: Publish to Xray
+    runs-on: ubuntu-latest
+    needs: [allure-report]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "*-junit"
+          merge-multiple: true
+          path: reports/combined
+
+      - name: Import to Xray
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          XRAY_TEST_EXECUTION_KEY: ${{ secrets.XRAY_TEST_EXECUTION_KEY }}
+        run: |
+          mkdir -p reports/junit
+          cp reports/combined/*.xml reports/junit/ 2>/dev/null || true
+          chmod +x scripts/xray-upload.sh
+          if [[ -n "${XRAY_CLIENT_ID:-}" ]]; then
+            ./scripts/xray-upload.sh
+          else
+            echo "Xray secrets not set — skipped"
+          fi
+
+  reportportal:
+    name: Publish to ReportPortal
+    runs-on: ubuntu-latest
+    needs: [allure-report]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "*-junit"
+          merge-multiple: true
+          path: reports/combined
+
+      - name: Upload to ReportPortal
+        env:
+          RP_ENDPOINT: ${{ secrets.RP_ENDPOINT }}
+          RP_PROJECT: ${{ secrets.RP_PROJECT }}
+          RP_TOKEN: ${{ secrets.RP_TOKEN }}
+        run: |
+          mkdir -p reports/junit
+          cp reports/combined/*.xml reports/junit/ 2>/dev/null || true
+          chmod +x scripts/upload-reportportal.sh
+          if [[ -n "${RP_TOKEN:-}" ]]; then
+            ./scripts/upload-reportportal.sh
+          else
+            echo "ReportPortal secrets not set — skipped"
+          fi

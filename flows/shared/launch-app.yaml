@@ -1,0 +1,5 @@
+# Shared subflow: launch banking demo app (web)
+url: ${BASE_URL}
+---
+- openLink: ${BASE_URL}
+- assertVisible: "Welcome to Demo App"

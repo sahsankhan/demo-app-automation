@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account — Demo App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Demo App</div>
+    <span class="step-badge">Step 3 of 4 — Account</span>
+  </header>
+
+  <main class="container narrow">
+    <h1>Open your account</h1>
+    <form id="account-form" class="form">
+      <div class="field-group">
+        <span class="field-label">Account type</span>
+        <input type="hidden" id="accountType" name="accountType" required />
+        <div class="option-buttons" data-field="accountType">
+          <button type="button" class="option-btn" data-value="checking">Checking</button>
+          <button type="button" class="option-btn" data-value="savings">Savings</button>
+          <button type="button" class="option-btn" data-value="premium">Premium Checking</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">Currency</span>
+        <input type="hidden" id="currency" name="currency" required />
+        <div class="option-buttons" data-field="currency">
+          <button type="button" class="option-btn" data-value="USD">USD</button>
+          <button type="button" class="option-btn" data-value="EUR">EUR</button>
+          <button type="button" class="option-btn" data-value="GBP">GBP</button>
+        </div>
+      </div>
+
+      <label for="initialDeposit">Initial deposit</label>
+      <input type="number" id="initialDeposit" name="initialDeposit" min="0" step="0.01" placeholder="100.00" required />
+
+      <button type="submit" class="btn primary" id="open-account-btn">Open Account</button>
+    </form>
+
+    <div id="account-success" class="success-panel hidden">
+      <h2>Account opened</h2>
+      <p>Account number: <strong id="account-number">—</strong></p>
+      <p>Balance: <strong id="account-balance">—</strong></p>
+      <a class="btn primary" href="payment.html" id="continue-payment">Continue to Payments</a>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

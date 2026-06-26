@@ -1,0 +1,51 @@
+# @BANK-500 Full banking E2E: onboarding → KYC → account → payment
+url: ${BASE_URL}
+---
+- runFlow:
+    file: ../shared/launch-app.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+
+- runFlow:
+    file: ../onboarding/register-user.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      FIRST_NAME: ${FIRST_NAME}
+      LAST_NAME: ${LAST_NAME}
+      EMAIL: ${EMAIL}
+      PHONE: ${PHONE}
+      PASSWORD: ${PASSWORD}
+
+- tapOn: "Continue to KYC"
+
+- runFlow:
+    file: ../kyc/verify-identity.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      DATE_OF_BIRTH: ${DATE_OF_BIRTH}
+      NATIONAL_ID: ${NATIONAL_ID}
+      ADDRESS: ${ADDRESS}
+      CITY: ${CITY}
+      COUNTRY_LABEL: ${COUNTRY_LABEL}
+      DOCUMENT_LABEL: ${DOCUMENT_LABEL}
+
+- tapOn: "Continue to Account"
+
+- runFlow:
+    file: ../account/setup-account.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      ACCOUNT_TYPE_LABEL: ${ACCOUNT_TYPE_LABEL}
+      CURRENCY: ${CURRENCY}
+      INITIAL_DEPOSIT: ${INITIAL_DEPOSIT}
+
+- tapOn: "Continue to Payments"
+
+- runFlow:
+    file: ../payment/make-payment.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      BENEFICIARY: ${BENEFICIARY}
+      BENEFICIARY_ACCOUNT: ${BENEFICIARY_ACCOUNT}
+      PAYMENT_AMOUNT: ${PAYMENT_AMOUNT}
+      PAYMENT_REFERENCE: ${PAYMENT_REFERENCE}

@@ -1,0 +1,16 @@
+node_modules/
+reports/
+api/target/
+allure-results/
+allure-report/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+
+#Ignore cursor AI rules
+.cursor/rules/codacy.mdc

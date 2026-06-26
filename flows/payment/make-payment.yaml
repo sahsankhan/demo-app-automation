@@ -1,0 +1,21 @@
+# @BANK-401 Fund transfer and payment confirmation
+url: ${BASE_URL}
+---
+- openLink: ${BASE_URL}/payment.html
+- assertVisible: "Make a payment"
+
+- tapOn: "Beneficiary name"
+- inputText: ${BENEFICIARY}
+
+- tapOn: "Beneficiary account"
+- inputText: ${BENEFICIARY_ACCOUNT}
+
+- tapOn: "Amount"
+- inputText: ${PAYMENT_AMOUNT}
+
+- tapOn: "Payment reference"
+- inputText: ${PAYMENT_REFERENCE}
+
+- tapOn: "Submit Payment"
+- assertVisible: "Payment successful"
+- assertVisible: "Banking journey complete"

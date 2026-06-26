@@ -1,0 +1,36 @@
+{
+  "$schema": "../schemas/user.schema.json",
+  "description": "User profiles for Demo App test runs",
+  "users": [
+    {
+      "id": "user-standard-us",
+      "xrayKey": "BANK-101",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane.doe@example.com",
+      "phone": "+15550100",
+      "password": "SecurePass123!",
+      "tags": ["smoke", "us", "standard"]
+    },
+    {
+      "id": "user-premium-uk",
+      "xrayKey": "BANK-102",
+      "firstName": "Oliver",
+      "lastName": "Smith",
+      "email": "oliver.smith@example.com",
+      "phone": "+447700900123",
+      "password": "PremiumPass456!",
+      "tags": ["regression", "uk", "premium"]
+    },
+    {
+      "id": "user-savings-ca",
+      "xrayKey": "BANK-103",
+      "firstName": "Emily",
+      "lastName": "Chen",
+      "email": "emily.chen@example.com",
+      "phone": "+14165550199",
+      "password": "SavingsPass789!",
+      "tags": ["regression", "ca", "savings"]
+    }
+  ]
+}

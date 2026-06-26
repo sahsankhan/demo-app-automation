@@ -1,0 +1,23 @@
+# @BANK-301 Open checking/savings/premium account
+url: ${BASE_URL}
+---
+- openLink: ${BASE_URL}/account.html
+- assertVisible: "Open your account"
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${ACCOUNT_TYPE_LABEL}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${CURRENCY}
+
+- tapOn: "Initial deposit"
+- inputText: ${INITIAL_DEPOSIT}
+
+- tapOn: "Open Account"
+- assertVisible: "Account opened"

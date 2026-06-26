@@ -1,0 +1,4 @@
+# Shared subflow: tap a visible option button (replaces native dropdowns)
+url: ${BASE_URL}
+---
+- tapOn: ${OPTION_LABEL}

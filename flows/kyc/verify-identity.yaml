@@ -1,0 +1,32 @@
+# @BANK-201 Identity verification and document submission
+url: ${BASE_URL}
+---
+- openLink: ${BASE_URL}/kyc.html
+- assertVisible: "Identity verification"
+
+- tapOn: "Date of birth"
+- inputText: ${DATE_OF_BIRTH}
+
+- tapOn: "National ID / SSN (last 4)"
+- inputText: ${NATIONAL_ID}
+
+- tapOn: "Street address"
+- inputText: ${ADDRESS}
+
+- tapOn: "City"
+- inputText: ${CITY}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${COUNTRY_LABEL}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${DOCUMENT_LABEL}
+
+- tapOn: "Submit KYC"
+- assertVisible: "KYC verified"

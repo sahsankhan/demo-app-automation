@@ -1,0 +1,11 @@
+# Maestro mobile flow example — point APP_ID and BASE_URL to your native banking app
+# Requires Android emulator / iOS simulator with app installed
+
+appId: ${APP_ID}
+---
+- launchApp
+- assertVisible: "Welcome"
+- tapOn: "Sign Up"
+- inputText: ${EMAIL}
+- tapOn: "Continue"
+- assertVisible: "Verify Identity"

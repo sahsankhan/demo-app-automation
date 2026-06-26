@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KYC — Demo App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Demo App</div>
+    <span class="step-badge">Step 2 of 4 — KYC</span>
+  </header>
+
+  <main class="container narrow">
+    <h1>Identity verification</h1>
+    <form id="kyc-form" class="form">
+      <label for="dateOfBirth">Date of birth</label>
+      <input type="date" id="dateOfBirth" name="dateOfBirth" required />
+
+      <label for="nationalId">National ID / SSN (last 4)</label>
+      <input type="text" id="nationalId" name="nationalId" placeholder="1234" maxlength="4" required />
+
+      <label for="address">Street address</label>
+      <input type="text" id="address" name="address" placeholder="123 Main St" required />
+
+      <label for="city">City</label>
+      <input type="text" id="city" name="city" placeholder="New York" required />
+
+      <div class="field-group">
+        <span class="field-label">Country</span>
+        <input type="hidden" id="country" name="country" required />
+        <div class="option-buttons" data-field="country">
+          <button type="button" class="option-btn" data-value="US">United States</button>
+          <button type="button" class="option-btn" data-value="UK">United Kingdom</button>
+          <button type="button" class="option-btn" data-value="CA">Canada</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">Document type</span>
+        <input type="hidden" id="documentType" name="documentType" required />
+        <div class="option-buttons" data-field="documentType">
+          <button type="button" class="option-btn" data-value="passport">Passport</button>
+          <button type="button" class="option-btn" data-value="drivers_license">Driver's License</button>
+          <button type="button" class="option-btn" data-value="national_id">National ID</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn primary" id="verify-kyc-btn">Submit KYC</button>
+    </form>
+
+    <div id="kyc-success" class="success-panel hidden">
+      <h2>KYC verified</h2>
+      <p>Your identity has been verified successfully.</p>
+      <a class="btn primary" href="account.html" id="continue-account">Continue to Account</a>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
