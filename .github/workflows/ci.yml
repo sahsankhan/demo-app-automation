@@ -11,6 +11,8 @@ env:
   NODE_VERSION: "20"
   JAVA_VERSION: "17"
   MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: "true"
+  HEADLESS: "true"
+  CI: "true"
 
 jobs:
   api-tests:
@@ -57,6 +59,9 @@ jobs:
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
+      - name: Set up Chrome for headless web tests
+        uses: browser-actions/setup-chrome@v1
+
       - name: Start Demo App (web)
         run: |
           npx --yes serve mock-app -l 3000 &
@@ -100,6 +105,9 @@ jobs:
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Set up Chrome for headless web tests
+        uses: browser-actions/setup-chrome@v1
 
       - name: Start Demo App (web)
         run: |

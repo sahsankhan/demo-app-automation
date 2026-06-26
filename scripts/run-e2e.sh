@@ -14,6 +14,8 @@ fi
 
 BASE_URL="${BASE_URL:-http://localhost:3000}"
 PLATFORM="${PLATFORM:-web}"
+# Headless is required for Maestro web tests in CI (GitHub Actions, etc.)
+HEADLESS="${HEADLESS:-${CI:+true}}"
 HEADLESS="${HEADLESS:-false}"
 REPORT_DIR="${REPORT_DIR:-reports/junit}"
 FLOW="${FLOW:-flows/e2e/banking-full-journey.yaml}"
