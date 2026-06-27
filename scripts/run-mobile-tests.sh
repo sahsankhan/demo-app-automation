@@ -98,6 +98,12 @@ adb install -r "$APK_PATH" >/dev/null
 echo "Clearing app data for a clean run..."
 adb shell pm clear "$APP_ID" >/dev/null || true
 
+if [[ "${CI:-false}" == "true" ]]; then
+  echo "Waiting for emulator WebView subsystem on CI..."
+  adb shell settings put global webview_provider com.google.android.webview 2>/dev/null || true
+  sleep 3
+fi
+
 echo "Resolving test data for user: $USER_ID"
 ENV_ARGS=()
 while IFS='=' read -r key value; do

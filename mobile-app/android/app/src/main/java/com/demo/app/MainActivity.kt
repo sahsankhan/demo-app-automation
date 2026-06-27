@@ -26,9 +26,15 @@ class MainActivity : AppCompatActivity() {
             cacheMode = WebSettings.LOAD_DEFAULT
         }
 
+        webView.isFocusable = true
+        webView.isFocusableInTouchMode = true
         webView.importantForAccessibility = android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES
 
         webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                view?.requestFocus()
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val url = request.url.toString()
                 return !url.startsWith("file:///android_asset/www/")

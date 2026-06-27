@@ -2,7 +2,11 @@
 appId: ${APP_ID}
 ---
 - launchApp
-- assertVisible: "Welcome to Demo App"
+
+- runFlow:
+    file: ../shared/wait-for-home.yaml
+    env:
+      APP_ID: ${APP_ID}
 
 # Onboarding
 - tapOn: "Start Onboarding"

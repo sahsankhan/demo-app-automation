@@ -1,0 +1,7 @@
+# Wait for bundled WebView home screen (slower on CI emulators)
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible: "Welcome to Demo App"
+    timeout: 90000
+- assertVisible: "Welcome to Demo App"
