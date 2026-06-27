@@ -1,0 +1,20 @@
+# @BANK-603 Mobile account setup steps
+appId: ${APP_ID}
+---
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      APP_ID: ${APP_ID}
+      OPTION_LABEL: ${ACCOUNT_TYPE_LABEL}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      APP_ID: ${APP_ID}
+      OPTION_LABEL: ${CURRENCY}
+
+- tapOn: "Initial deposit"
+- inputText: ${INITIAL_DEPOSIT}
+
+- tapOn: "Open Account"
+- assertVisible: "Account opened"

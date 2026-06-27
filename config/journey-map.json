@@ -1,0 +1,135 @@
+{
+  "ui": {
+    "pages": {
+      "home": {
+        "path": "/",
+        "assertText": "Welcome to Demo App",
+        "feature": "flows/shared/launch-app.yaml",
+        "xrayKey": null
+      },
+      "onboarding": {
+        "path": "/onboarding.html",
+        "assertText": "Create your account",
+        "feature": "flows/onboarding/register-user.yaml",
+        "stepsFeature": "flows/onboarding/register-steps.yaml",
+        "xrayKey": "BANK-101",
+        "next": {
+          "buttonId": "continue-kyc",
+          "successText": "Registration successful",
+          "target": "kyc"
+        }
+      },
+      "kyc": {
+        "path": "/kyc.html",
+        "assertText": "Identity verification",
+        "feature": "flows/kyc/verify-identity.yaml",
+        "stepsFeature": "flows/kyc/verify-steps.yaml",
+        "xrayKey": "BANK-201",
+        "next": {
+          "buttonId": "continue-account",
+          "successText": "KYC verified",
+          "target": "account"
+        }
+      },
+      "account": {
+        "path": "/account.html",
+        "assertText": "Open your account",
+        "feature": "flows/account/setup-account.yaml",
+        "stepsFeature": "flows/account/setup-steps.yaml",
+        "xrayKey": "BANK-301",
+        "next": {
+          "buttonId": "continue-payment",
+          "successText": "Account opened",
+          "target": "payment"
+        }
+      },
+      "payment": {
+        "path": "/payment.html",
+        "assertText": "Make a payment",
+        "feature": "flows/payment/make-payment.yaml",
+        "stepsFeature": "flows/payment/make-payment-steps.yaml",
+        "xrayKey": "BANK-401",
+        "next": null
+      }
+    }
+  },
+  "mobile": {
+    "appId": "com.demo.app",
+    "apk": "mobile-app/build/demo-app-debug.apk",
+    "pages": {
+      "home": {
+        "assertText": "Welcome to Demo App",
+        "feature": "flows/mobile/e2e/banking-full-journey.yaml",
+        "xrayKey": "BANK-600"
+      },
+      "onboarding": {
+        "assertText": "Create your account",
+        "stepsFeature": "flows/mobile/onboarding/register-steps.yaml",
+        "xrayKey": "BANK-601",
+        "next": {
+          "successText": "Registration successful",
+          "continueLabel": "Continue to KYC",
+          "target": "kyc"
+        }
+      },
+      "kyc": {
+        "assertText": "Identity verification",
+        "stepsFeature": "flows/mobile/kyc/verify-steps.yaml",
+        "xrayKey": "BANK-602",
+        "next": {
+          "successText": "KYC verified",
+          "continueLabel": "Continue to Account",
+          "target": "account"
+        }
+      },
+      "account": {
+        "assertText": "Open your account",
+        "stepsFeature": "flows/mobile/account/setup-steps.yaml",
+        "xrayKey": "BANK-603",
+        "next": {
+          "successText": "Account opened",
+          "continueLabel": "Continue to Payment",
+          "target": "payment"
+        }
+      },
+      "payment": {
+        "assertText": "Make a payment",
+        "stepsFeature": "flows/mobile/payment/make-payment-steps.yaml",
+        "xrayKey": "BANK-604",
+        "next": null
+      }
+    }
+  },
+  "api": {
+    "routes": {
+      "health": {
+        "segments": ["api", "v1", "health"],
+        "xrayKey": null
+      },
+      "onboarding": {
+        "segments": ["api", "v1", "onboarding", "register"],
+        "xrayKey": "BANK-111"
+      },
+      "kyc": {
+        "segments": ["api", "v1", "kyc", "verify"],
+        "xrayKey": "BANK-211"
+      },
+      "account": {
+        "segments": ["api", "v1", "accounts"],
+        "xrayKey": "BANK-311"
+      },
+      "payment": {
+        "segments": ["api", "v1", "payments"],
+        "xrayKey": "BANK-411"
+      },
+      "accountBalance": {
+        "segments": ["api", "v1", "accounts", "${accountId}", "balance"],
+        "xrayKey": null
+      },
+      "reset": {
+        "segments": ["api", "v1", "test", "reset"],
+        "xrayKey": null
+      }
+    }
+  }
+}

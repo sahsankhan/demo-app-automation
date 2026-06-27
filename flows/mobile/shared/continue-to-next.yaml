@@ -1,0 +1,5 @@
+# Continue to the next screen after a step completes
+appId: ${APP_ID}
+---
+- assertVisible: ${SUCCESS_TEXT}
+- tapOn: ${CONTINUE_LABEL}

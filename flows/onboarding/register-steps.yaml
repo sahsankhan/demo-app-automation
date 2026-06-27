@@ -1,0 +1,20 @@
+# @BANK-101 Registration form steps (no navigation — use go-to-page first)
+url: ${BASE_URL}
+---
+- tapOn: "First name"
+- inputText: ${FIRST_NAME}
+
+- tapOn: "Last name"
+- inputText: ${LAST_NAME}
+
+- tapOn: "Email"
+- inputText: ${EMAIL}
+
+- tapOn: "Phone"
+- inputText: ${PHONE}
+
+- tapOn: "Password"
+- inputText: ${PASSWORD}
+
+- tapOn: "Register"
+- assertVisible: "Registration successful"

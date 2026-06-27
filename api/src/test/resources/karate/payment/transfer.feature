@@ -2,6 +2,7 @@ Feature: Payment API @BANK-411
 
   Background:
     * call read('classpath:karate/common/setup.feature')
+    * def routes = call read('classpath:karate/common/routes.js')
     * url baseUrl
 
   Scenario Outline: Submit payment and validate balance for <userId>
@@ -12,24 +13,24 @@ Feature: Payment API @BANK-411
     * def paymentData = scenario.payment
     * def expectedBalance = scenario.expectedBalance
 
-    Given path 'api', apiVersion, 'onboarding', 'register'
+    Given path routes.onboarding
     And request { firstName: '#(user.firstName)', lastName: '#(user.lastName)', email: '#(user.email)', phone: '#(user.phone)', password: '#(user.password)' }
     When method post
     Then status 201
     * def customerId = response.customerId
 
-    Given path 'api', apiVersion, 'kyc', 'verify'
+    Given path routes.kyc
     And request { customerId: '#(customerId)', dateOfBirth: '#(kyc.dateOfBirth)', nationalId: '#(kyc.nationalId)', address: '#(kyc.address)', city: '#(kyc.city)', country: '#(kyc.country)', documentType: '#(kyc.documentType)' }
     When method post
     Then status 200
 
-    Given path 'api', apiVersion, 'accounts'
+    Given path routes.account
     And request { customerId: '#(customerId)', accountType: '#(accountData.accountType)', currency: '#(accountData.currency)', initialDeposit: '#(accountData.initialDeposit)' }
     When method post
     Then status 201
     * def accountId = response.accountId
 
-    Given path 'api', apiVersion, 'payments'
+    Given path routes.payment
     And request
       """
       {
@@ -45,7 +46,8 @@ Feature: Payment API @BANK-411
     And match response contains { transactionId: '#string', status: 'SUCCESS' }
     And match response.newBalance == expectedBalance
 
-    Given path 'api', apiVersion, 'accounts', accountId, 'balance'
+    * def balancePath = routes.accountBalance(accountId)
+    Given path balancePath
     When method get
     Then status 200
     And match response.balance == expectedBalance

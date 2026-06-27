@@ -15,8 +15,8 @@ echo "==> Converting JUnit XML to Allure results"
 if [[ -n "${JUNIT_INPUT:-}" && -f "$JUNIT_INPUT" ]]; then
   JUNIT_FILES=("$JUNIT_INPUT")
 else
-  mapfile -t JUNIT_FILES < <(
-    find reports/junit reports/karate -name '*.xml' -type f 2>/dev/null | sort -u || true
+    mapfile -t JUNIT_FILES < <(
+    find reports/junit reports/karate reports/cucumber-ui reports/surefire -name '*.xml' -type f 2>/dev/null | sort -u || true
   )
 fi
 

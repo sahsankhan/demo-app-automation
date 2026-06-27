@@ -19,8 +19,8 @@ fi
 
 if [[ "${UI_ONLY:-false}" != "true" ]]; then
   echo ""
-  echo ">> UI tests (Maestro web)"
-  USER_ID="$USER_ID" ./scripts/run-e2e.sh
+  echo ">> UI tests (Cucumber + POM)"
+  ./scripts/run-ui-bdd.sh
 fi
 
 echo ""
@@ -30,5 +30,5 @@ GENERATE_ALLURE=true ./scripts/generate-allure-report.sh
 echo ""
 echo "Done. Reports:"
 echo "  API : reports/karate/"
-echo "  UI  : reports/junit/"
+echo "  UI  : reports/cucumber-ui/"
 echo "  HTML: allure-report/"

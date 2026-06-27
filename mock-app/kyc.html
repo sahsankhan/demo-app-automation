@@ -16,16 +16,16 @@
     <h1>Identity verification</h1>
     <form id="kyc-form" class="form">
       <label for="dateOfBirth">Date of birth</label>
-      <input type="date" id="dateOfBirth" name="dateOfBirth" required />
+      <input type="text" id="dateOfBirth" name="dateOfBirth" aria-label="Date of birth" inputmode="numeric" placeholder="1990-05-15" required />
 
-      <label for="nationalId">National ID / SSN (last 4)</label>
-      <input type="text" id="nationalId" name="nationalId" placeholder="1234" maxlength="4" required />
+      <label for="nationalId">National ID</label>
+      <input type="text" id="nationalId" name="nationalId" aria-label="National ID" placeholder="1234" maxlength="4" required />
 
       <label for="address">Street address</label>
-      <input type="text" id="address" name="address" placeholder="123 Main St" required />
+      <input type="text" id="address" name="address" aria-label="Street address" placeholder="123 Main St" required />
 
       <label for="city">City</label>
-      <input type="text" id="city" name="city" placeholder="New York" required />
+      <input type="text" id="city" name="city" aria-label="City" placeholder="New York" required />
 
       <div class="field-group">
         <span class="field-label">Country</span>

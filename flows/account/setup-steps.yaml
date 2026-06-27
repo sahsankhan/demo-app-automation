@@ -1,0 +1,20 @@
+# @BANK-301 Account setup steps (no navigation)
+url: ${BASE_URL}
+---
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${ACCOUNT_TYPE_LABEL}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${CURRENCY}
+
+- tapOn: "Initial deposit"
+- inputText: ${INITIAL_DEPOSIT}
+
+- tapOn: "Open Account"
+- assertVisible: "Account opened"

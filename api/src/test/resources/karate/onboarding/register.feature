@@ -2,12 +2,13 @@ Feature: Onboarding API @BANK-111
 
   Background:
     * call read('classpath:karate/common/setup.feature')
+    * def routes = call read('classpath:karate/common/routes.js')
     * url baseUrl
 
   Scenario Outline: Register customer via API for <userId>
     * def scenario = call read('classpath:karate/common/load-scenario.js') { userId: '#(userId)' }
     * def user = scenario.user
-    Given path 'api', apiVersion, 'onboarding', 'register'
+    Given path routes.onboarding
     And request
       """
       {

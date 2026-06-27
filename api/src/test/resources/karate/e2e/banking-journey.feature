@@ -2,6 +2,7 @@ Feature: Full banking API journey @BANK-600
 
   Background:
     * call read('classpath:karate/common/setup.feature')
+    * def routes = call read('classpath:karate/common/routes.js')
     * url baseUrl
 
   Scenario Outline: End-to-end API flow onboarding → KYC → account → payment for <userId>
@@ -12,7 +13,8 @@ Feature: Full banking API journey @BANK-600
     * def paymentData = scenario.payment
     * def expectedBalance = scenario.expectedBalance
 
-    Given path 'api', apiVersion, 'onboarding', 'register'
+    # Step 1 — Onboarding
+    Given path routes.onboarding
     And header Content-Type = 'application/json'
     And request
       """
@@ -29,7 +31,8 @@ Feature: Full banking API journey @BANK-600
     And match response.status == 'REGISTERED'
     * def customerId = response.customerId
 
-    Given path 'api', apiVersion, 'kyc', 'verify'
+    # Step 2 — KYC
+    Given path routes.kyc
     And request
       """
       {
@@ -46,7 +49,8 @@ Feature: Full banking API journey @BANK-600
     Then status 200
     And match response.kycStatus == 'VERIFIED'
 
-    Given path 'api', apiVersion, 'accounts'
+    # Step 3 — Account
+    Given path routes.account
     And request
       """
       {
@@ -62,7 +66,8 @@ Feature: Full banking API journey @BANK-600
     * def accountId = response.accountId
     * def openingBalance = response.balance
 
-    Given path 'api', apiVersion, 'payments'
+    # Step 4 — Payment
+    Given path routes.payment
     And request
       """
       {
@@ -78,7 +83,9 @@ Feature: Full banking API journey @BANK-600
     And match response.status == 'SUCCESS'
     And match response.newBalance == expectedBalance
 
-    Given path 'api', apiVersion, 'accounts', accountId, 'balance'
+    # Step 5 — Balance check
+    * def balancePath = routes.accountBalance(accountId)
+    Given path balancePath
     When method get
     Then status 200
     And match response.balance == expectedBalance

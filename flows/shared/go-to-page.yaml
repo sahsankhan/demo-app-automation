@@ -1,0 +1,5 @@
+# Navigate to a page — use PAGE_URL and PAGE_ASSERT from resolve-page.js
+url: ${BASE_URL}
+---
+- openLink: ${PAGE_URL}
+- assertVisible: ${PAGE_ASSERT}

@@ -1,0 +1,29 @@
+# @BANK-602 Mobile KYC form steps
+appId: ${APP_ID}
+---
+- tapOn: "Date of birth"
+- inputText: ${DATE_OF_BIRTH}
+
+- tapOn: "National ID"
+- inputText: ${NATIONAL_ID}
+
+- tapOn: "Street address"
+- inputText: ${ADDRESS}
+
+- tapOn: "City"
+- inputText: ${CITY}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      APP_ID: ${APP_ID}
+      OPTION_LABEL: ${COUNTRY_LABEL}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      APP_ID: ${APP_ID}
+      OPTION_LABEL: ${DOCUMENT_LABEL}
+
+- tapOn: "Submit KYC"
+- assertVisible: "KYC verified"

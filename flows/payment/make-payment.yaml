@@ -1,21 +1,18 @@
-# @BANK-401 Fund transfer and payment confirmation
+# @BANK-401 Standalone payment test — page → steps
 url: ${BASE_URL}
 ---
-- openLink: ${BASE_URL}/payment.html
-- assertVisible: "Make a payment"
+- runFlow:
+    file: ../shared/go-to-page.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      PAGE_URL: ${BASE_URL}/payment.html
+      PAGE_ASSERT: "Make a payment"
 
-- tapOn: "Beneficiary name"
-- inputText: ${BENEFICIARY}
-
-- tapOn: "Beneficiary account"
-- inputText: ${BENEFICIARY_ACCOUNT}
-
-- tapOn: "Amount"
-- inputText: ${PAYMENT_AMOUNT}
-
-- tapOn: "Payment reference"
-- inputText: ${PAYMENT_REFERENCE}
-
-- tapOn: "Submit Payment"
-- assertVisible: "Payment successful"
-- assertVisible: "Banking journey complete"
+- runFlow:
+    file: make-payment-steps.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      BENEFICIARY: ${BENEFICIARY}
+      BENEFICIARY_ACCOUNT: ${BENEFICIARY_ACCOUNT}
+      PAYMENT_AMOUNT: ${PAYMENT_AMOUNT}
+      PAYMENT_REFERENCE: ${PAYMENT_REFERENCE}

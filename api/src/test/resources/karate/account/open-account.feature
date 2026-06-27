@@ -2,6 +2,7 @@ Feature: Account API @BANK-311
 
   Background:
     * call read('classpath:karate/common/setup.feature')
+    * def routes = call read('classpath:karate/common/routes.js')
     * url baseUrl
 
   Scenario Outline: Open account after KYC for <userId>
@@ -10,18 +11,18 @@ Feature: Account API @BANK-311
     * def kyc = scenario.kyc
     * def accountData = scenario.account
 
-    Given path 'api', apiVersion, 'onboarding', 'register'
+    Given path routes.onboarding
     And request { firstName: '#(user.firstName)', lastName: '#(user.lastName)', email: '#(user.email)', phone: '#(user.phone)', password: '#(user.password)' }
     When method post
     Then status 201
     * def customerId = response.customerId
 
-    Given path 'api', apiVersion, 'kyc', 'verify'
+    Given path routes.kyc
     And request { customerId: '#(customerId)', dateOfBirth: '#(kyc.dateOfBirth)', nationalId: '#(kyc.nationalId)', address: '#(kyc.address)', city: '#(kyc.city)', country: '#(kyc.country)', documentType: '#(kyc.documentType)' }
     When method post
     Then status 200
 
-    Given path 'api', apiVersion, 'accounts'
+    Given path routes.account
     And request
       """
       {

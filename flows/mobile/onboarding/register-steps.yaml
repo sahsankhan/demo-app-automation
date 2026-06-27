@@ -1,0 +1,20 @@
+# @BANK-601 Mobile onboarding form steps
+appId: ${APP_ID}
+---
+- tapOn: "First name"
+- inputText: ${FIRST_NAME}
+
+- tapOn: "Last name"
+- inputText: ${LAST_NAME}
+
+- tapOn: "Email"
+- inputText: ${EMAIL}
+
+- tapOn: "Phone"
+- inputText: ${PHONE}
+
+- tapOn: "Password"
+- inputText: ${PASSWORD}
+
+- tapOn: "Register"
+- assertVisible: "Registration successful"

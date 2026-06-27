@@ -1,113 +1,94 @@
-# Demo App — Test Automation Framework
+# Demo App Test Automation
 
-Automated tests for **Demo App**, a sample banking product. Covers API (Karate), web UI (Maestro), shared test data, Allure/ReportPortal reporting, GitHub Actions CI, and optional Xray traceability.
+End-to-end test framework for a sample banking application. Covers API (Karate), web UI (Cucumber + Selenium POM), and Android mobile (Maestro). Shared JSON test data drives all layers.
 
-## What gets tested
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for design notes.
 
-| Flow step | API test | UI test |
-|---|---|---|
-| Onboarding | `api/.../onboarding/register.feature` | `flows/onboarding/register-user.yaml` |
-| KYC | `api/.../kyc/verify.feature` | `flows/kyc/verify-identity.yaml` |
-| Account | `api/.../account/open-account.feature` | `flows/account/setup-account.yaml` |
-| Payment | `api/.../payment/transfer.feature` | `flows/payment/make-payment.yaml` |
-| Full journey | `api/.../e2e/banking-journey.feature` | `flows/e2e/banking-full-journey.yaml` |
-| Business rules | `api/.../e2e/business-validations.feature` | — |
-
-Architecture details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-
-## Project layout
+## Repository layout
 
 ```
-api/           Karate API tests
-flows/         Maestro web UI tests
-flows/mobile/  Maestro mobile template
-mock-api/      REST API used by Karate
-mock-app/      Web UI used by Maestro
-data/          Shared test data (JSON)
-scripts/       Test runners
-.github/       CI pipeline
+api/           Karate API tests (Maven module)
+ui/            Cucumber + Selenium UI tests (Maven module)
+mobile-app/    Android demo app (WebView wrapper around mock-app)
+flows/         Maestro flows for web and mobile
+mock-api/      REST API for Karate
+mock-app/      Web UI under test
+data/          Shared test profiles (JSON)
+config/        Journey map and environment config
+scripts/       Shell runners
 ```
 
-## Setup
+## Prerequisites
 
-**Requirements:** Node 18+, Java 17+, Maven 3.8+, [Maestro CLI](https://maestro.mobile.dev)
+- Node 18+
+- Java 17+ and Maven 3.8+
+- Chrome (UI tests)
+- Android SDK and Maestro CLI (mobile tests)
+- Maestro CLI (optional, for Maestro web flows)
 
 ```bash
-curl -Ls "https://get.maestro.mobile.dev" | bash
-echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> ~/.zshrc
 chmod +x scripts/*.sh
 ```
 
-## Run tests locally
+## Quick start
 
-**Option A — smoke (API + one UI journey)**
-
-```bash
-npm run test:smoke
-```
-
-**Option B — run layers separately**
+Start the apps:
 
 ```bash
-# Terminal 1
-npm run mock:api    # http://localhost:4000
-npm run mock:serve  # http://localhost:3000
-
-# Terminal 2
-npm run test:api
-npm run test:ui
+npm run mock:api    # port 4000
+npm run mock:serve  # port 3000
 ```
 
-**Other commands**
+Run tests:
 
 ```bash
-npm run test:regression    # full API + tagged UI scenarios
-npm run test:data-driven   # all UI user profiles
-npm run test:full          # API + UI + Allure
-npm run report:allure      # generate HTML report
+npm run test:api       # Karate
+npm run test:ui        # Cucumber + POM
+npm run test:mobile    # Maestro on Android (starts emulator if needed)
+npm run test:smoke     # API + UI smoke
 ```
 
-## CI/CD
-
-Pipeline: `.github/workflows/ci.yml`
-
-Runs on **every push, pull request, and manual trigger**:
-
-1. API tests (Karate)
-2. UI tests (Maestro web)
-3. Data-driven regression (smoke + regression tags)
-4. Allure report artifact
-5. Xray + ReportPortal (main branch, when secrets are configured)
-
-## Test data
-
-Shared JSON in `data/` — same profiles drive both API and UI:
-
-- `data/users/onboarding-users.json`
-- `data/kyc/kyc-scenarios.json`
-- `data/payments/payment-scenarios.json`
+Build the Android APK:
 
 ```bash
-USER_ID=user-premium-uk npm run test:ui
-TAG_FILTER=smoke npm run test:data-driven
+npm run mobile:build
+# -> mobile-app/build/demo-app-debug.apk
 ```
 
-## Reporting & traceability
-
-- **Allure:** `npm run report:allure` → `allure-report/index.html`
-- **ReportPortal:** set `RP_*` in `.env`, then `npm run report:portal`
-- **Xray:** tests tagged `@BANK-xxx` in feature files; set `XRAY_*` in `.env`
-
-Copy `.env.example` to `.env` for integration credentials.
-
-## Pointing at your own app
+Filter UI scenarios by tag:
 
 ```bash
-export BASE_URL=https://your-staging-app.com
-export API_URL=https://your-staging-api.com
+CUCUMBER_TAGS="@ui and @smoke" npm run test:ui
 ```
 
-Update selectors in `flows/` and endpoints in `api/` Karate features.
+## Test coverage
+
+| Step | API | Web UI | Maestro web | Maestro mobile |
+|---|---|---|---|---|
+| Onboarding | Karate | Cucumber | `flows/onboarding/` | `flows/mobile/onboarding/` |
+| KYC | Karate | Cucumber | `flows/kyc/` | `flows/mobile/kyc/` |
+| Account | Karate | Cucumber | `flows/account/` | `flows/mobile/account/` |
+| Payment | Karate | Cucumber | `flows/payment/` | `flows/mobile/payment/` |
+| Full journey | Karate e2e | Cucumber e2e | `flows/e2e/` | `flows/mobile/e2e/` |
+
+## CI
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on push, pull request, and manual dispatch:
+
+- API tests (Karate)
+- UI tests (Cucumber)
+- Mobile tests (APK build + Maestro on emulator)
+- UI regression by tag
+- Allure report upload
+- Optional Xray and ReportPortal on main
+
+## Reporting
+
+```bash
+npm run report:allure
+```
+
+Configure `.env` from `.env.example` for ReportPortal (`RP_*`) and Xray (`XRAY_*`).
 
 ## License
 

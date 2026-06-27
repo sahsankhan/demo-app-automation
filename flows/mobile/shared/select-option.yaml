@@ -1,0 +1,4 @@
+# @BANK-601 Mobile — tap a visible option button
+appId: ${APP_ID}
+---
+- tapOn: ${OPTION_LABEL}

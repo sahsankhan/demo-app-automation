@@ -1,0 +1,29 @@
+# @BANK-201 KYC form steps (no navigation — use go-to-page or continue-to-next first)
+url: ${BASE_URL}
+---
+- tapOn: "Date of birth"
+- inputText: ${DATE_OF_BIRTH}
+
+- tapOn: "National ID"
+- inputText: ${NATIONAL_ID}
+
+- tapOn: "Street address"
+- inputText: ${ADDRESS}
+
+- tapOn: "City"
+- inputText: ${CITY}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${COUNTRY_LABEL}
+
+- runFlow:
+    file: ../shared/select-option.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      OPTION_LABEL: ${DOCUMENT_LABEL}
+
+- tapOn: "Submit KYC"
+- assertVisible: "KYC verified"

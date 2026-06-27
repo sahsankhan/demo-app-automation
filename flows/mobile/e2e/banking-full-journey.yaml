@@ -1,0 +1,77 @@
+# @BANK-600 Full mobile banking journey (Android APK)
+appId: ${APP_ID}
+---
+- launchApp
+- assertVisible: "Welcome to Demo App"
+
+# Onboarding
+- tapOn: "Start Onboarding"
+- assertVisible: "Create your account"
+
+- runFlow:
+    file: ../onboarding/register-steps.yaml
+    env:
+      APP_ID: ${APP_ID}
+      FIRST_NAME: ${FIRST_NAME}
+      LAST_NAME: ${LAST_NAME}
+      EMAIL: ${EMAIL}
+      PHONE: ${PHONE}
+      PASSWORD: ${PASSWORD}
+
+- runFlow:
+    file: ../shared/continue-to-next.yaml
+    env:
+      APP_ID: ${APP_ID}
+      SUCCESS_TEXT: "Registration successful"
+      CONTINUE_LABEL: "Continue to KYC"
+
+# KYC
+- assertVisible: "Identity verification"
+
+- runFlow:
+    file: ../kyc/verify-steps.yaml
+    env:
+      APP_ID: ${APP_ID}
+      DATE_OF_BIRTH: ${DATE_OF_BIRTH}
+      NATIONAL_ID: ${NATIONAL_ID}
+      ADDRESS: ${ADDRESS}
+      CITY: ${CITY}
+      COUNTRY_LABEL: ${COUNTRY_LABEL}
+      DOCUMENT_LABEL: ${DOCUMENT_LABEL}
+
+- runFlow:
+    file: ../shared/continue-to-next.yaml
+    env:
+      APP_ID: ${APP_ID}
+      SUCCESS_TEXT: "KYC verified"
+      CONTINUE_LABEL: "Continue to Account"
+
+# Account
+- assertVisible: "Open your account"
+
+- runFlow:
+    file: ../account/setup-steps.yaml
+    env:
+      APP_ID: ${APP_ID}
+      ACCOUNT_TYPE_LABEL: ${ACCOUNT_TYPE_LABEL}
+      CURRENCY: ${CURRENCY}
+      INITIAL_DEPOSIT: ${INITIAL_DEPOSIT}
+
+- runFlow:
+    file: ../shared/continue-to-next.yaml
+    env:
+      APP_ID: ${APP_ID}
+      SUCCESS_TEXT: "Account opened"
+      CONTINUE_LABEL: "Continue to Payments"
+
+# Payment
+- assertVisible: "Make a payment"
+
+- runFlow:
+    file: ../payment/make-payment-steps.yaml
+    env:
+      APP_ID: ${APP_ID}
+      BENEFICIARY: ${BENEFICIARY}
+      BENEFICIARY_ACCOUNT: ${BENEFICIARY_ACCOUNT}
+      PAYMENT_AMOUNT: ${PAYMENT_AMOUNT}
+      PAYMENT_REFERENCE: ${PAYMENT_REFERENCE}

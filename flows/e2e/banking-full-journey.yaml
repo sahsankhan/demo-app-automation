@@ -1,13 +1,24 @@
-# @BANK-500 Full banking E2E: onboarding → KYC → account → payment
+# @BANK-500 Full banking E2E — feature → steps → pages (single navigation path)
 url: ${BASE_URL}
 ---
+# Home
 - runFlow:
-    file: ../shared/launch-app.yaml
+    file: ../shared/go-to-page.yaml
     env:
       BASE_URL: ${BASE_URL}
+      PAGE_URL: ${BASE_URL}/
+      PAGE_ASSERT: "Welcome to Demo App"
+
+# Onboarding: page → steps → next page
+- runFlow:
+    file: ../shared/go-to-page.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      PAGE_URL: ${BASE_URL}/onboarding.html
+      PAGE_ASSERT: "Create your account"
 
 - runFlow:
-    file: ../onboarding/register-user.yaml
+    file: ../onboarding/register-steps.yaml
     env:
       BASE_URL: ${BASE_URL}
       FIRST_NAME: ${FIRST_NAME}
@@ -16,10 +27,16 @@ url: ${BASE_URL}
       PHONE: ${PHONE}
       PASSWORD: ${PASSWORD}
 
-- tapOn: "Continue to KYC"
-
 - runFlow:
-    file: ../kyc/verify-identity.yaml
+    file: ../shared/continue-to-next.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      SUCCESS_TEXT: "Registration successful"
+      CONTINUE_ID: "continue-kyc"
+
+# KYC: steps only (already on kyc.html) → next page
+- runFlow:
+    file: ../kyc/verify-steps.yaml
     env:
       BASE_URL: ${BASE_URL}
       DATE_OF_BIRTH: ${DATE_OF_BIRTH}
@@ -29,20 +46,32 @@ url: ${BASE_URL}
       COUNTRY_LABEL: ${COUNTRY_LABEL}
       DOCUMENT_LABEL: ${DOCUMENT_LABEL}
 
-- tapOn: "Continue to Account"
-
 - runFlow:
-    file: ../account/setup-account.yaml
+    file: ../shared/continue-to-next.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      SUCCESS_TEXT: "KYC verified"
+      CONTINUE_ID: "continue-account"
+
+# Account: steps only → next page
+- runFlow:
+    file: ../account/setup-steps.yaml
     env:
       BASE_URL: ${BASE_URL}
       ACCOUNT_TYPE_LABEL: ${ACCOUNT_TYPE_LABEL}
       CURRENCY: ${CURRENCY}
       INITIAL_DEPOSIT: ${INITIAL_DEPOSIT}
 
-- tapOn: "Continue to Payments"
-
 - runFlow:
-    file: ../payment/make-payment.yaml
+    file: ../shared/continue-to-next.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      SUCCESS_TEXT: "Account opened"
+      CONTINUE_ID: "continue-payment"
+
+# Payment: steps only (already on payment.html)
+- runFlow:
+    file: ../payment/make-payment-steps.yaml
     env:
       BASE_URL: ${BASE_URL}
       BENEFICIARY: ${BENEFICIARY}

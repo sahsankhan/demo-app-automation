@@ -1,0 +1,6 @@
+# Continue to the next page after a step completes — no openLink reload
+url: ${BASE_URL}
+---
+- assertVisible: ${SUCCESS_TEXT}
+- tapOn:
+    id: ${CONTINUE_ID}

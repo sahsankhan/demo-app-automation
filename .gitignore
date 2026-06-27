@@ -1,16 +1,28 @@
 node_modules/
 reports/
-api/target/
 allure-results/
 allure-report/
+
+# Maven
+api/target/
+ui/target/
+
+# Android
+mobile-app/build/
+mobile-app/android/.gradle/
+mobile-app/android/app/build/
+mobile-app/android/build/
+mobile-app/android/app/src/main/assets/www/
+
+# Environment
 .env
 .env.*
 !.env.example
+
+# OS / IDE
 *.log
 .DS_Store
 .idea/
 .vscode/
 .cursor/
-
-#Ignore cursor AI rules
 .cursor/rules/codacy.mdc

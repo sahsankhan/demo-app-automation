@@ -14,6 +14,6 @@ if ! curl -sf "http://localhost:3000" >/dev/null 2>&1; then
 fi
 
 ./scripts/run-api-tests.sh
-TAG_FILTER=regression ./scripts/data-driven-runner.sh
+CUCUMBER_TAGS="@ui" ./scripts/run-ui-bdd.sh
 
 echo "Regression tests passed."

@@ -1,23 +1,19 @@
-# @BANK-101 User registration and email capture
+# @BANK-101 Standalone onboarding test — page → steps
 url: ${BASE_URL}
 ---
-- openLink: ${BASE_URL}/onboarding.html
-- assertVisible: "Create your account"
+- runFlow:
+    file: ../shared/go-to-page.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      PAGE_URL: ${BASE_URL}/onboarding.html
+      PAGE_ASSERT: "Create your account"
 
-- tapOn: "First name"
-- inputText: ${FIRST_NAME}
-
-- tapOn: "Last name"
-- inputText: ${LAST_NAME}
-
-- tapOn: "Email"
-- inputText: ${EMAIL}
-
-- tapOn: "Phone"
-- inputText: ${PHONE}
-
-- tapOn: "Password"
-- inputText: ${PASSWORD}
-
-- tapOn: "Register"
-- assertVisible: "Registration successful"
+- runFlow:
+    file: register-steps.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      FIRST_NAME: ${FIRST_NAME}
+      LAST_NAME: ${LAST_NAME}
+      EMAIL: ${EMAIL}
+      PHONE: ${PHONE}
+      PASSWORD: ${PASSWORD}

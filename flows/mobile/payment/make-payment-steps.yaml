@@ -1,0 +1,18 @@
+# @BANK-604 Mobile payment steps
+appId: ${APP_ID}
+---
+- tapOn: "Beneficiary name"
+- inputText: ${BENEFICIARY}
+
+- tapOn: "Beneficiary account"
+- inputText: ${BENEFICIARY_ACCOUNT}
+
+- tapOn: "Amount"
+- inputText: ${PAYMENT_AMOUNT}
+
+- tapOn: "Payment reference"
+- inputText: ${PAYMENT_REFERENCE}
+
+- tapOn: "Submit Payment"
+- assertVisible: "Payment successful"
+- assertVisible: "Banking journey complete"

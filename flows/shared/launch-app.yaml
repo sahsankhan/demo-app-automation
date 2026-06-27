@@ -1,5 +1,9 @@
-# Shared subflow: launch banking demo app (web)
+# Shared subflow: open Demo App home page
 url: ${BASE_URL}
 ---
-- openLink: ${BASE_URL}
-- assertVisible: "Welcome to Demo App"
+- runFlow:
+    file: go-to-page.yaml
+    env:
+      BASE_URL: ${BASE_URL}
+      PAGE_URL: ${BASE_URL}/
+      PAGE_ASSERT: "Welcome to Demo App"

@@ -1,23 +1,17 @@
-# @BANK-301 Open checking/savings/premium account
+# @BANK-301 Standalone account test — page → steps
 url: ${BASE_URL}
 ---
-- openLink: ${BASE_URL}/account.html
-- assertVisible: "Open your account"
-
 - runFlow:
-    file: ../shared/select-option.yaml
+    file: ../shared/go-to-page.yaml
     env:
       BASE_URL: ${BASE_URL}
-      OPTION_LABEL: ${ACCOUNT_TYPE_LABEL}
+      PAGE_URL: ${BASE_URL}/account.html
+      PAGE_ASSERT: "Open your account"
 
 - runFlow:
-    file: ../shared/select-option.yaml
+    file: setup-steps.yaml
     env:
       BASE_URL: ${BASE_URL}
-      OPTION_LABEL: ${CURRENCY}
-
-- tapOn: "Initial deposit"
-- inputText: ${INITIAL_DEPOSIT}
-
-- tapOn: "Open Account"
-- assertVisible: "Account opened"
+      ACCOUNT_TYPE_LABEL: ${ACCOUNT_TYPE_LABEL}
+      CURRENCY: ${CURRENCY}
+      INITIAL_DEPOSIT: ${INITIAL_DEPOSIT}

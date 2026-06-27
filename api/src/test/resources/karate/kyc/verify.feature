@@ -2,6 +2,7 @@ Feature: KYC API @BANK-211
 
   Background:
     * call read('classpath:karate/common/setup.feature')
+    * def routes = call read('classpath:karate/common/routes.js')
     * url baseUrl
 
   Scenario Outline: Verify customer identity for <userId>
@@ -9,13 +10,13 @@ Feature: KYC API @BANK-211
     * def user = scenario.user
     * def kyc = scenario.kyc
 
-    Given path 'api', apiVersion, 'onboarding', 'register'
+    Given path routes.onboarding
     And request { firstName: '#(user.firstName)', lastName: '#(user.lastName)', email: '#(user.email)', phone: '#(user.phone)', password: '#(user.password)' }
     When method post
     Then status 201
     * def customerId = response.customerId
 
-    Given path 'api', apiVersion, 'kyc', 'verify'
+    Given path routes.kyc
     And request
       """
       {
